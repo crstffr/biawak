@@ -1,0 +1,22 @@
+{
+  "name": "biawak",
+  "version": "1.0.0",
+  "description": "linux system monitoring with fancy graphs and shit",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crstffr/biawak.git"
+  },
+  "author": "crstffr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crstffr/biawak/issues"
+  },
+  "homepage": "https://github.com/crstffr/biawak#readme",
+  "dependencies": {
+    "tail": "^0.4.0"
+  }
+}

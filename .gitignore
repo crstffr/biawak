@@ -1,0 +1,6 @@
+.idea
+cert
+node_modules
+jspm_packages
+test/reports
+.DS_Store
