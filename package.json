@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/crstffr/biawak#readme",
   "dependencies": {
+    "ginx": "0.0.2",
     "tail": "^0.4.0"
   }
 }
