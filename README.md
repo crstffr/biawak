@@ -16,3 +16,15 @@ events/{id}
      -- foo
      -- bar
      -- baz 
+
+ipaddress/{ip}
+  -- range
+  -- requests
+    -- https
+    -- http
+    -- ssh
+  -- geo
+    -- country
+    -- region
+    -- city
+    -- ll

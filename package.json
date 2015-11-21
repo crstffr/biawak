@@ -17,9 +17,13 @@
   },
   "homepage": "https://github.com/crstffr/biawak#readme",
   "dependencies": {
+    "file-exists": "^1.0.0",
     "http-string-parser": "0.0.5",
+    "inquirer": "^0.11.0",
     "lodash": "^3.10.1",
+    "mkdirp": "^0.5.1",
     "moment": "^2.10.6",
+    "nconf": "^0.8.2",
     "tail": "^0.4.0"
   }
 }
