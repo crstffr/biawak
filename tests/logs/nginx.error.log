@@ -1,0 +1,1 @@
+2015/11/21 16:29:51 [error] 9261#9261: *40 open() "/home/ubuntu/media/tvshows/.nomedia" failed (2: No such file or directory), client: 73.164.2.198, server: strmr.space, request: "HEAD /media/tvshows/.nomedia HTTP/1.1", host: "strmr.space"

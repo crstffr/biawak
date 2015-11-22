@@ -1,45 +1,123 @@
 #!/usr/bin/env node
 
+var _ = require('lodash');
 var exists = require('file-exists');
 var inquirer = require('inquirer');
+
 var config = require('./lib/config');
-var tails = require('./lib/tails');
-var _ = require('lodash');
+var files = require('./lib/files');
 
-var choices = [];
-var installed = config.get('tails');
+askWhich(); // kick off the questions.
 
-_.each(tails, function(type){
+var options = {
+    ask: askWhich,
+    tail: installTail,
+    fbsetup: firebaseSetup,
+    quit: quit
+};
 
-});
+function divider() {
+    console.log('> ------------------------------------------------');
+}
 
-var questions = [
-    {
-        type: 'list',
-        name: 'tail',
-        message: 'Select Tail to Install',
-        choices: tails
-    },
-    {
-        type: 'input',
-        name: 'file',
-        message: function(answers){
-            return 'Path to ' + answers.tail + '.log';
-        },
-        default: '/var/log/foo.log',
-        validate: function(input){
-            return exists(input) ? true : 'File does not exist';
+function message(text) {
+    console.log('> ' + text);
+}
+
+function askWhich() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'which',
+            message: 'What do you want to do?',
+            choices: [
+                {name: 'Firebase Setup', value: 'fbsetup'},
+                {name: 'Install Tail', value: 'tail'},
+                {name: 'Quit', value: 'quit'}
+            ]
         }
-    }
-];
+    ], function (answer) {
+        options[answer.which]();
+    });
+}
 
+function firebaseSetup() {
 
-inquirer.prompt(questions, function (answers) {
+    var Firebase = require('firebase');
+    var appRef;
 
-    console.log(answers);
-    config.set('tails:' + answers.tail, {file: answers.file});
-    config.save();
-});
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'url',
+            message: 'Your Firebase Data URL',
+            default: config.get('firebase:url') || 'yourapp.firebaseio.com',
+            validate: function(input) {
+                appRef = new Firebase('https://' + input);
+                return Boolean(appRef);
+            }
+        },
+        {
+            type: 'input',
+            name: 'secret',
+            message: 'Your Firebase App Secret',
+            default: config.get('firebase:secret') || '',
+            validate: function (input) {
+                var done = this.async();
+                appRef.authWithCustomToken(input, function(error){
+                    if (error) { done('Invalid secret token'); }
+                    else { done(true); }
+                });
+            }
+        }
+    ], function (answers) {
+        config.set('firebase', {url: answers.url, secret: answers.secret});
+        config.save();
+        divider();
+        message('Firebase Configured Successfully');
+        divider();
+        askWhich();
+    });
 
+}
 
-// config.set('tails:nginx.access', {file: './tests/logs/nginx.access.log'});
+function installTail() {
+
+    var fakeLogFile;
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'tail',
+            message: 'Select Tail to Install',
+            choices: files.tails()
+        },
+        {
+            type: 'input',
+            name: 'file',
+            message: function (answers) {
+                fakeLogFile = answers.tail + '.log';
+                return 'Path to ' + fakeLogFile;
+            },
+            default: function (answers) {
+                var current = config.get('tails:' + answers.tail);
+                return (current && current.file) ? current.file : '/var/log/' + fakeLogFile;
+            },
+            validate: function (input) {
+                return exists(input) ? true : 'File does not exist';
+            }
+        }
+    ], function (answers) {
+        config.set('tails:' + answers.tail, {file: answers.file});
+        config.save();
+        divider();
+        message('Tail installed successfully: ' + answers.tail);
+        divider();
+        askWhich();
+    });
+
+}
+
+function quit() {
+    process.exit();
+}

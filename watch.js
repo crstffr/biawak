@@ -3,16 +3,12 @@
 var config = require('./lib/config');
 var events = require('./lib/events');
 var loader = require('./lib/loader');
+var stream = require('./lib/model/stream');
 
-var tails = config.get('tails');
+loader.loadTails();
 
-if (!tails) {
-    console.error('No tails have been configured, run install.js to set one up.');
-    process.exit(9); // invalid argument exit?
-}
+events.on('tail:*', function(which, data) {
 
-loader.loadTails(tails);
+    stream.push(data);
 
-events.on('nginx.access', function(data){
-    console.log(data);
 });
