@@ -4,8 +4,9 @@ var _ = require('lodash');
 var exists = require('file-exists');
 var inquirer = require('inquirer');
 
-var config = require('./lib/config');
-var files = require('./lib/files');
+var Writer = require('./lib/install/writer');
+var files = require('./lib/install/files');
+var config = new Writer(files.config);
 
 askWhich(); // kick off the questions.
 
@@ -48,8 +49,8 @@ function firebaseSetup() {
 
     inquirer.prompt([
         {
-            type: 'input',
             name: 'url',
+            type: 'input',
             message: 'Your Firebase Data URL',
             default: config.get('firebase:url') || 'yourapp.firebaseio.com',
             validate: function(input) {
@@ -108,7 +109,9 @@ function installTail() {
             }
         }
     ], function (answers) {
-        config.set('tails:' + answers.tail, {file: answers.file});
+        var data = {};
+        data[answers.tail] = {file: answers.file};
+        config.set('tails', data);
         config.save();
         divider();
         message('Tail installed successfully: ' + answers.tail);

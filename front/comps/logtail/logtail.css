@@ -1,0 +1,9 @@
+logtail {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+logtail p {
+    padding: 0;
+    margin: 0;
+}

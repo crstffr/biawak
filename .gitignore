@@ -1,6 +1,7 @@
 .idea
 cert
+.DS_Store
 node_modules
 jspm_packages
 test/reports
-.DS_Store
+user.config.js

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <script src="./jspm_packages/system.js"></script>
+    <script src="./front/config.js"></script>
+    <script>
+        System.import('front/app').then(function(app){
+            angular.bootstrap(document, [app.name]);
+        });
+    </script>
+</head>
+<body ui-view></body>
+</html>
