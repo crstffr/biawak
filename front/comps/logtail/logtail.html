@@ -1,4 +1,4 @@
 <p ng-repeat="item in ctrl.items">
-    <span>{{item.timestamp * 1000 | date : 'short'}}</span>
+    <span>{{item.timestamp | date : 'short'}}</span>
     {{item.rawstring}}
 </p>

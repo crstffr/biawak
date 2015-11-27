@@ -52,7 +52,7 @@ function firebaseSetup() {
             name: 'url',
             type: 'input',
             message: 'Your Firebase Data URL',
-            default: config.get('firebase:url') || 'yourapp.firebaseio.com',
+            default: config.get('firebase.url') || 'yourapp.firebaseio.com',
             validate: function(input) {
                 appRef = new Firebase('https://' + input);
                 return Boolean(appRef);
@@ -62,7 +62,7 @@ function firebaseSetup() {
             type: 'input',
             name: 'secret',
             message: 'Your Firebase App Secret',
-            default: config.get('firebase:secret') || '',
+            default: config.get('firebase.secret') || '',
             validate: function (input) {
                 var done = this.async();
                 appRef.authWithCustomToken(input, function(error){
@@ -101,7 +101,7 @@ function installTail() {
                 return 'Path to ' + fakeLogFile;
             },
             default: function (answers) {
-                var current = config.get('tails:' + answers.tail);
+                var current = config.get('tails.' + answers.tail);
                 return (current && current.file) ? current.file : '/var/log/' + fakeLogFile;
             },
             validate: function (input) {

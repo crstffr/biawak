@@ -11,6 +11,7 @@ module.exports = angular.module('logtail', [])
             restrict: 'E',
             transclude: true,
             controllerAs: 'ctrl',
+            bindToController: true,
             template: require('./logtail.html!text'),
             controller: require('./logtail.ctrl')
         }

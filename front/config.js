@@ -18,6 +18,7 @@ System.config({
     "lodash": "npm:lodash@3.10.1",
     "moment": "npm:moment@2.10.6",
     "text": "github:systemjs/plugin-text@0.0.3",
+    "wildemitter": "github:HenrikJoreteg/wildemitter@1.2.0",
     "github:angular-ui/ui-router@0.2.15": {
       "angular": "github:angular/bower-angular@1.4.8"
     },

@@ -1,12 +1,8 @@
 
 module.exports = LogtailCtrl;
 
-LogtailCtrl.$inject = ['$scope'];
+LogtailCtrl.$inject = [];
 
-function LogtailCtrl($scope) {
-
-    this.items = $scope.items;
-
-    console.log(this);
+function LogtailCtrl() {
 
 }

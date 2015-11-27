@@ -11,6 +11,8 @@ function StreamCtrl(digest) {
 
     _this.items = [];
 
+    console.log(_this);
+
     stream.limitToLast(4).on('child_added', function(snapshot) {
         digest.force(function(){
             _this.items.push(snapshot.val());
