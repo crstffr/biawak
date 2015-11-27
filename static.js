@@ -14,7 +14,7 @@ function StaticServer() {
     });
 
     this.start = function() {
-        _this.app.listen(8666);
+        _this.app.listen(8666, '127.0.0.1');
         console.log('Static server started on http://localhost:8666');
     }
 
