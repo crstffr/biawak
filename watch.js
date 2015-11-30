@@ -4,22 +4,41 @@ var _ = require('lodash');
 var server = require('./static');
 var events = require('./lib/events');
 var loader = require('./lib/loader');
+var packrat = require('./lib/packrat');
 var stream = require('./lib/model/stream');
-var IpInfo = require('./lib/model/ipinfo');
+var User = require('./lib/model/user');
+var Ip = require('./lib/model/ip');
 
-loader.loadStats();
 loader.loadTails();
+packrat.start();
 server.start();
 
 events.on('tail:*', function(which, data) {
-    stream.push(data);
+
+    var key = stream.push(data).key();
+
+    var event = {
+        key: key,
+        timestamp: data.timestamp
+    };
+
+    if (data.ip) {
+        events.emit('ip', data.ip, event);
+    }
+
+    if (data.user) {
+        events.emit('user', data.user, event);
+    }
+
 });
 
-events.on('tail:nginx.access', function(data) {
-    var ip = _.get(data, 'params.remote_addr');
-    if (ip) {
-        var info = new IpInfo(ip);
-        info.child('events').push(data);
-    }
+events.on('ip', function(ip, data) {
+    var model = new Ip(ip);
+    model.child('events').child(data.key).set(1);
+});
+
+events.on('user', function(user, data, key) {
+    var model = new User(user);
+    model.child('events').child(data.key).set(1);
 });
 
